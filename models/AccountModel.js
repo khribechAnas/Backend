@@ -15,11 +15,9 @@ const accountSchema = new mongoose.Schema({
       },
       phoneNumber : {
         type : String,
-        required : [true, "please enter the phone"]
       },
       address : {
         type : String,
-        required : [true, "please enter the address"]
       },
       isAdmin : {
         type : Boolean,
@@ -35,7 +33,6 @@ const accountSchema = new mongoose.Schema({
       },
       resetPasswordToken : {
         type : String,
-        required : [true, "please enter the reserPasswordToken"]
       },
       resetPasswordExpires : {
         type : Date,

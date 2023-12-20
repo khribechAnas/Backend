@@ -1,19 +1,20 @@
-const mongoose = require('mongoose');
+const mongoose = require ('mongoose');
 
-const categorySchema = new mongoose.Schema({
-  name: { 
-    type: String, 
-    required: true },
-    
- description: String,
-  createdAt: 
-  { type: Date, 
-    default: Date.now },
-
+const accountSchema = new mongoose.Schema ({
+  name: {
+    type: String,
+    required: true,
+    unique: true
+  },
+  description: {
+    type: String,
+  },
   parentCategory: String,
-  isActive: { type: Boolean, default: true }
-});
+  isActive: Boolean
+} ,
+{timestamps: true}
+);
 
-const CategoryModel = mongoose.model('Category', categorySchema);
+const AccountModel = mongoose.model('Account', accountSchema);
 
-module.exports = CategoryModel;
+module.exports = AccountModel;

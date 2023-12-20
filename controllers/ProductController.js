@@ -19,7 +19,7 @@ class ProductController {
       if (!removedProduct) {
         return res.status(404).json({ error: 'Product not found' });
       }
-
+      
       res.status(200).json({ message: 'Product removed successfully', removedProduct });
     } catch (error) {
       console.error(error);
