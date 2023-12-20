@@ -21,6 +21,7 @@ const productSchema = new mongoose.Schema({
   metaDescription: String,
   metaKeywords: String,
 }, { timestamps: true }); 
+
 const ProductModel = mongoose.model('Product', productSchema);
 
 module.exports = ProductModel;

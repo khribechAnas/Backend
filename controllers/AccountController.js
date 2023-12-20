@@ -1,7 +1,8 @@
-const AccountModel = require('../models/AccountModel');
+// const AccountModel = require('../models/AccountModel');
 
 
-class AccountController {
+// class AccountController {
     
-}
-module.exports = AccountController;
+// }
+
+// module.exports = AccountController;

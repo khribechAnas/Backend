@@ -2,7 +2,7 @@ const AccountModel = require('../models/AccountModel');
 const jwt = require('jsonwebtoken');
 const secretKey = 'mao_digital'; 
 
-class AccountController {
+class AuthController {
     async register(req, res) {
       try {
       const newAccount = await AccountModel.create(req.body);
