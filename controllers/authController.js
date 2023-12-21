@@ -5,7 +5,12 @@ const secretKey = 'mao_digital';
 class AuthController {
     async register(req, res) {
       try {
-      const newAccount = await AccountModel.create(req.body);
+        const {fullname,email,password} = req.body
+      const newAccount = await AccountModel.create({
+        fullname,
+        email,
+        password
+      });
       res.status(201).json(newAccount);
     } catch (error) {
       console.error(error);
@@ -70,7 +75,7 @@ class AuthController {
             }
             }
 }
-module.exports = AccountController;
+module.exports = AuthController;
 
 
 

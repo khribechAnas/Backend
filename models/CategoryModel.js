@@ -1,6 +1,6 @@
 const mongoose = require ('mongoose');
 
-const accountSchema = new mongoose.Schema ({
+const categorySchema = new mongoose.Schema ({
   name: {
     type: String,
     required: true,
@@ -15,6 +15,6 @@ const accountSchema = new mongoose.Schema ({
 {timestamps: true}
 );
 
-const AccountModel = mongoose.model('Account', accountSchema);
+const CategoryModel = mongoose.model('Category', categorySchema);
 
-module.exports = AccountModel;
+module.exports = CategoryModel;

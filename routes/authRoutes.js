@@ -18,4 +18,7 @@ router.post('/logout', authController.logout);
 
 router.post('/resetpassword', authController.resetPassword);
 
-export default router;
+
+module.exports = router;
+
+
