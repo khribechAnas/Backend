@@ -1,15 +1,18 @@
 const AccountModel = require('../models/AccountModel');
 const jwt = require('jsonwebtoken');
+const bcrypt = require('bcryptjs')
 const secretKey = 'mao_digital'; 
 
 class AuthController {
     async register(req, res) {
       try {
         const {fullname,email,password} = req.body
+        const hashedPassword = await bcrypt.hash(newPassword, 10);
       const newAccount = await AccountModel.create({
         fullname,
         email,
-        password
+        password: hashedPassword 
+
       });
       res.status(201).json(newAccount);
     } catch (error) {
@@ -28,7 +31,7 @@ class AuthController {
           }
     
           // Generate a JWT token
-          const token = jwt.sign({ accountId: account._id }, secretKey, { expiresIn: '1h' });
+          const token = jwt.sign({ accountId: account._id }, secretKey);
     
           // Update last login timestamp
           account.lastLogin = new Date();
@@ -60,12 +63,14 @@ class AuthController {
         
         async resetPassword(req, res) {
             try {
-                const { token } = req.body;
+                const { token, newPassword } = req.body;
+                const hashedPassword = await bcrypt.hash(newPassword, 10);
                 const decoded = jwt.verify(token, secretKey);
                 const { accountId } = decoded;
                 const account = await AccountModel.findById(accountId);
                 account.resetPasswordToken = "";
                 account.resetPasswordExpires = Date.now() + 3600000; // 1 hour
+                account.password = hashedPassword;
                 await account.save();
                 res.status(200).json({ message: 'Successfully reset password' });
                 
