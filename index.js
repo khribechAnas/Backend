@@ -9,6 +9,10 @@ const shippingRoutes = require("./routes/shippingRoutes.js");
 const transactionsRoutes = require("./routes/transactionsRoutes.js");
 // const ordersRouter = require('./routes/ordersRoutes.js')
 
+const accountRouter = require ('./routes/accountRoutes');
+
+
+
 dotenv.config();
 const PORT = process.env.PORT || 5001;
 
@@ -19,6 +23,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.use("/auth", authRouter);
+app.use("/accounts", accountRouter);
 app.use("/categories", categoryRouter);
 app.use("/products", productRouter);
 app.use("/notifications", notificationsRouter);
