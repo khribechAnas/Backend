@@ -4,6 +4,8 @@ const dotenv = require ('dotenv');
 const authRouter = require ('./routes/authRoutes.js');
 const categoryRouter = require ('./routes/categoryRoutes.js');
 const productRouter = require ('./routes/productRoutes.js');
+const accountRouter = require ('./routes/accountRoutes');
+
 
 dotenv.config();
 const PORT = process.env.PORT || 5001;
@@ -14,6 +16,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.use("/auth", authRouter);
+app.use("/accounts", accountRouter);
 app.use("/categories", categoryRouter);
 app.use("/products", productRouter);
 
