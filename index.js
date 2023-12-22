@@ -5,10 +5,9 @@ const authRouter = require ('./routes/authRoutes.js');
 const categoryRouter = require ('./routes/categoryRoutes.js');
 const productRouter = require ('./routes/productRoutes.js');
 
-const notificationsRouter = require('./routes/notificationsRoutes.js')
-const shippingRoutes = require('./routes/shippingRoutes.js')
-const transactionsRoutes = require('./routes/transactionsRoutes.js');
-
+// const notificationsRouter = require('./routes/notificationsRoutes.js')
+// const shippingRoutes = require('./routes/shippingRoutes.js')
+// const transactionsRoutes = require('./routes/transactionsRoutes.js');
 // const ordersRouter = require('./routes/ordersRoutes.js')
 
 const accountRouter = require ('./routes/accountRoutes');
@@ -27,9 +26,9 @@ app.use("/auth", authRouter);
 app.use("/accounts", accountRouter);
 app.use("/categories", categoryRouter);
 app.use("/products", productRouter);
-app.use("/notifications",notificationsRouter);
-app.use("/shipping",shippingRoutes);
-app.use("/transactions",transactionsRoutes);
+// app.use("/notifications",notificationsRouter);
+// app.use("/shipping",shippingRoutes);
+// app.use("/transactions",transactionsRoutes);
 // app.use("/orders", ordersRouter);
 
 

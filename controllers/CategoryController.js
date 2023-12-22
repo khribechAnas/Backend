@@ -14,7 +14,7 @@ class CategoryController {
   async removeCategory(req, res) {
     try {
       const { categoryId } = req.params;
-      const removedCategory = await CategoryModel.findByIdAndRemove(categoryId);
+      const removedCategory = await CategoryModel.findByIdAndDelete(categoryId);
 
       if (!removedCategory) {
         return res.status(404).json({ error: 'Category not found' });

@@ -14,7 +14,7 @@ class ProductController {
   async removeProduct(req, res) {
     try {
       const { productId } = req.params;
-      const removedProduct = await ProductModel.findByIdAndRemove(productId);
+      const removedProduct = await ProductModel.findByIdAndDelete(productId);
 
       if (!removedProduct) {
         return res.status(404).json({ error: 'Product not found' });
@@ -45,8 +45,8 @@ class ProductController {
 
   async chooseProductsByCategory(req, res) {
     try {
-      const { category } = req.params;
-      const products = await ProductModel.find({ category });
+      const { categoryId } = req.params;
+      const products = await ProductModel.find({ categoryId });
 
       res.status(200).json({ products });
     } catch (error) {

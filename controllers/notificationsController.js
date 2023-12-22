@@ -11,8 +11,8 @@ exports.createNotification = async (req, res) => {
 
 exports.updateNotification = async (req, res) => {
   try {
-    const { id } = req.params;
-    const notification = await NotificationsModel.findByIdAndUpdate(id, req.body, {
+    const { userId } = req.params;
+    const notification = await NotificationsModel.findByIdAndUpdate(userId, req.body, {
       new: true,
       runValidators: true,
     });
