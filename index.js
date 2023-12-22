@@ -8,13 +8,10 @@ const notificationsRouter = require("./routes/notificationsRoutes.js");
 const shippingRoutes = require("./routes/shippingRoutes.js");
 const transactionsRoutes = require("./routes/transactionsRoutes.js");
 // const ordersRouter = require('./routes/ordersRoutes.js')
-
-const accountRouter = require ('./routes/accountRoutes');
-
-
+const accountRouter = require("./routes/accountRoutes");
 
 dotenv.config();
-const PORT = process.env.PORT || 5001;
+const PORT = process.env.PORT;
 
 const app = express();
 connectDB();
