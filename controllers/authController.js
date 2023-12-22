@@ -7,12 +7,12 @@ class AuthController {
     async register(req, res) {
       try {
         const {fullname,email,password} = req.body
-        const hashedPassword = await bcrypt.hash(newPassword, 10);
+        const hashedPassword = await bcrypt.hash(password, 10);
       const newAccount = await AccountModel.create({
         fullname,
         email,
         password: hashedPassword 
-
+        
       });
       res.status(201).json(newAccount);
     } catch (error) {
