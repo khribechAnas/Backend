@@ -41,6 +41,30 @@ class TransactionsController {
     }
   }
 
+  async getTransactionByOrderId(req, res) {
+    try {
+      const { orderId } = req.params;
+      const transactions = await TransactionsModel.find({ orderId });
+
+      res.status(200).json(transactions);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: 'Internal Server Error' });
+    }
+  }
+
+  async getTransactionByUserId(req, res) {
+    try {
+      const { userId } = req.params;
+      const transactions = await TransactionsModel.find({ userId });
+
+      res.status(200).json(transactions);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: 'Internal Server Error' });
+    }
+  }
+
   async updateTransaction(req, res) {
     try {
       const { id } = req.params;

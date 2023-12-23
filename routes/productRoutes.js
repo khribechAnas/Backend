@@ -4,11 +4,12 @@ const ProductController = require('../controllers/ProductController');
 
 const productController = new ProductController();
 
-
+router.get('/',productController.getAllProduct);
+router.get('/:productId',productController.getProductById);
+router.get('/choose/:categoryId', productController.chooseProductsByCategory);
 router.post('/add', productController.addProduct);
 router.delete('/remove/:productId', productController.removeProduct);
 router.put('/update/:productId', productController.updateProduct);
-router.get('/choose/:category', productController.chooseProductsByCategory);
 
 
 module.exports = router;

@@ -4,6 +4,7 @@ const CategoryController = require('../controllers/CategoryController');
 
 const categoryController = new CategoryController();
 
+router.get('/',categoryController.getAllCategories);
 
 router.post('/add', categoryController.addCategory);
 

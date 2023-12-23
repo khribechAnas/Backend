@@ -2,6 +2,11 @@ const mongoose = require("mongoose");
 
 const shippingSchema = new mongoose.Schema(
   {
+    orderId:{
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Order",
+      required: [true, "Please enter the user ID"],
+    },
     type: {
       type: String,
       required: [true, "Please enter the shipping type"],

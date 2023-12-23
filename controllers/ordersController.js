@@ -1,75 +1,88 @@
 // ordersController.js
-const OrderModel = require('../models/OrderModel');
+const OrderModel = require('../models/orderModel');
+
 
 class OrderController {
-  async createOrder(req, res) {
+  async getAllOrders(req, res) {
     try {
-      const newOrder = await OrderModel.create(req.body);
-      res.status(201).json({ success: true, data: newOrder });
+      const orders = await OrderModel.find();
+      res.status(200).json({ orders });
     } catch (error) {
       console.error(error);
-      res.status(500).json({ success: false, error: 'Internal Server Error' });
+      res.status(500).json({ error: 'Internal Server Error' });
     }
   }
 
-  async getOrder(req, res) {
+  async getOrderByUserId(req, res) {
     try {
-      const { id } = req.params;
-      const order = await OrderModel.findById(id);
+      const { userId } = req.params;
+      const orders = await OrderModel.find({ userId });
 
-      if (!order) {
-        return res.status(404).json({ success: false, error: 'Order not found' });
-      }
-
-      res.status(200).json({ success: true, data: order });
+      res.status(200).json({ orders });
     } catch (error) {
       console.error(error);
-      res.status(500).json({ success: false, error: 'Internal Server Error' });
+      res.status(500).json({ error: 'Internal Server Error' });
     }
   }
 
   async updateOrder(req, res) {
     try {
-      const { id } = req.params;
-      const updatedOrder = await OrderModel.findByIdAndUpdate(id, req.body, { new: true });
+      const { orderId } = req.params;
+      const updatedOrder = await OrderModel.findByIdAndUpdate(orderId, req.body, { new: true });
 
       if (!updatedOrder) {
-        return res.status(404).json({ success: false, error: 'Order not found' });
+        return res.status(404).json({ error: 'Order not found' });
       }
 
-      res.status(200).json({ success: true, data: updatedOrder });
+      res.status(200).json({ message: 'Order updated successfully', updatedOrder });
     } catch (error) {
       console.error(error);
-      res.status(500).json({ success: false, error: 'Internal Server Error' });
+      res.status(500).json({ error: 'Internal Server Error' });
+    }
+  }
+
+  async addOrder(req, res) {
+    try {
+      const newOrder = await OrderModel.create(req.body);
+      res.status(201).json(newOrder);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: 'Internal Server Error' });
+    }
+  }
+  
+  async getOrderById(req, res) {
+    try {
+      const { orderId } = req.params;
+      const order = await OrderModel.findById(orderId);
+
+      if (!order) {
+        return res.status(404).json({ error: 'Order not found' });
+      }
+
+      res.status(200).json({ order });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: 'Internal Server Error' });
     }
   }
 
   async deleteOrder(req, res) {
     try {
-      const { id } = req.params;
-      const deletedOrder = await OrderModel.findByIdAndRemove(id);
+      const { orderId } = req.params;
+      const removedOrder = await OrderModel.findByIdAndDelete(orderId);
 
-      if (!deletedOrder) {
-        return res.status(404).json({ success: false, error: 'Order not found' });
+      if (!removedOrder) {
+        return res.status(404).json({ error: 'Order not found' });
       }
 
-      res.status(200).json({ success: true, message: 'Order deleted successfully', data: deletedOrder });
+      res.status(200).json({ message: 'Order removed successfully', removedOrder });
     } catch (error) {
       console.error(error);
-      res.status(500).json({ success: false, error: 'Internal Server Error' });
-    }
-  }
-
-  async getAllOrders(req, res) {
-    try {
-      const orders = await OrderModel.find();
-      res.status(200).json({ success: true, data: orders });
-    } catch (error) {
-      console.error(error);
-      res.status(500).json({ success: false, error: 'Internal Server Error' });
+      res.status(500).json({ error: 'Internal Server Error' });
     }
   }
 }
 
-// module.exports = new OrderController();
 module.exports = OrderController;
+

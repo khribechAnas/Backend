@@ -7,9 +7,8 @@ const productRouter = require("./routes/productRoutes.js");
 const notificationsRouter = require("./routes/notificationsRoutes.js");
 const shippingRoutes = require("./routes/shippingRoutes.js");
 const transactionsRoutes = require("./routes/transactionsRoutes.js");
-// const ordersRouter = require('./routes/ordersRoutes.js')
-
 const accountRouter = require ('./routes/accountRoutes');
+const ordersRouter = require('./routes/ordersRoutes.js')
 
 
 
@@ -29,7 +28,8 @@ app.use("/products", productRouter);
 app.use("/notifications", notificationsRouter);
 app.use("/shipping", shippingRoutes);
 app.use("/transactions", transactionsRoutes);
-// app.use("/orders", ordersRouter);
+app.use("/orders", ordersRouter);
+
 
 app.get("/", (req, res) => {
   res.json("App worked successfully");
