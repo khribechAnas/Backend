@@ -1,7 +1,6 @@
 const AccountModel = require("../models/AccountModel");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
-const secretKey = "mao_digital";
 
 class AuthController {
   async register(req, res) {
@@ -29,8 +28,17 @@ class AuthController {
         return res.status(401).json({ error: "Invalid email or password" });
       }
 
+      const samePass = bcrypt.compare(password, process.env.SECRET_KEY)
+      if (!samePass) {
+        return res.status(401).json({ error: "password not correct" });
+      }
+
       // Generate a JWT token
-      const token = jwt.sign({ accountId: account._id }, secretKey);
+      const token = jwt.sign({ accountId: account._id }, process.env.SECRET_KEY);
+
+      if(email === process.env.ADMIN_EMAIL){
+          account.isAdmin = true
+      }
 
       // Update last login timestamp
       account.lastLogin = new Date();
@@ -47,7 +55,7 @@ class AuthController {
   async logout(req, res) {
     try {
       const { token } = req.body;
-      const decoded = jwt.verify(token, secretKey);
+      const decoded = jwt.verify(token, process.env.SECRET_KEY);
       const { accountId } = decoded;
       const account = await AccountModel.findById(accountId);
       account.lastLogin = new Date();
@@ -63,7 +71,7 @@ class AuthController {
     try {
       const { token, newPassword } = req.body;
       const hashedPassword = await bcrypt.hash(newPassword, 10);
-      const decoded = jwt.verify(token, secretKey);
+      const decoded = jwt.verify(token, process.env.SECRET_KEY);
       const { accountId } = decoded;
       const account = await AccountModel.findById(accountId);
       account.resetPasswordToken = "";
