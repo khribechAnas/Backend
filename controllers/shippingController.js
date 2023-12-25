@@ -1,5 +1,5 @@
 // shippingController.js
-const ShippingModel = require('../models/ShippingModel');
+const ShippingModel = require("../models/ShippingModel");
 
 class ShippingController {
   async createShipping(req, res) {
@@ -8,7 +8,7 @@ class ShippingController {
       res.status(201).json({ success: true, data: newShipping });
     } catch (error) {
       console.error(error);
-      res.status(500).json({ success: false, error: 'Internal Server Error' });
+      res.status(500).json({ success: false, error: "Internal Server Error" });
     }
   }
 
@@ -18,13 +18,15 @@ class ShippingController {
       const shipping = await ShippingModel.findById(id);
 
       if (!shipping) {
-        return res.status(404).json({ success: false, error: 'Shipping not found' });
+        return res
+          .status(404)
+          .json({ success: false, error: "Shipping not found" });
       }
 
       res.status(200).json({ success: true, data: shipping });
     } catch (error) {
       console.error(error);
-      res.status(500).json({ success: false, error: 'Internal Server Error' });
+      res.status(500).json({ success: false, error: "Internal Server Error" });
     }
   }
   async getShippingByOrderId(req, res) {
@@ -33,29 +35,40 @@ class ShippingController {
       const shipping = await ShippingModel.findOne({ orderId });
 
       if (!shipping) {
-        return res.status(404).json({ success: false, error: 'Shipping not found for the specified order ID' });
+        return res
+          .status(404)
+          .json({
+            success: false,
+            error: "Shipping not found for the specified order ID",
+          });
       }
 
       res.status(200).json({ success: true, data: shipping });
     } catch (error) {
       console.error(error);
-      res.status(500).json({ success: false, error: 'Internal Server Error' });
+      res.status(500).json({ success: false, error: "Internal Server Error" });
     }
   }
 
   async updateShipping(req, res) {
     try {
       const { id } = req.params;
-      const updatedShipping = await ShippingModel.findByIdAndUpdate(id, req.body, { new: true });
+      const updatedShipping = await ShippingModel.findByIdAndUpdate(
+        id,
+        req.body,
+        { new: true }
+      );
 
       if (!updatedShipping) {
-        return res.status(404).json({ success: false, error: 'Shipping not found' });
+        return res
+          .status(404)
+          .json({ success: false, error: "Shipping not found" });
       }
 
       res.status(200).json({ success: true, data: updatedShipping });
     } catch (error) {
       console.error(error);
-      res.status(500).json({ success: false, error: 'Internal Server Error' });
+      res.status(500).json({ success: false, error: "Internal Server Error" });
     }
   }
 
@@ -65,13 +78,21 @@ class ShippingController {
       const deletedShipping = await ShippingModel.findByIdAndDelete(id);
 
       if (!deletedShipping) {
-        return res.status(404).json({ success: false, error: 'Shipping not found' });
+        return res
+          .status(404)
+          .json({ success: false, error: "Shipping not found" });
       }
 
-      res.status(200).json({ success: true, message: 'Shipping deleted successfully', data: deletedShipping });
+      res
+        .status(200)
+        .json({
+          success: true,
+          message: "Shipping deleted successfully",
+          data: deletedShipping,
+        });
     } catch (error) {
       console.error(error);
-      res.status(500).json({ success: false, error: 'Internal Server Error' });
+      res.status(500).json({ success: false, error: "Internal Server Error" });
     }
   }
 
@@ -81,7 +102,7 @@ class ShippingController {
       res.status(200).json({ success: true, data: shippings });
     } catch (error) {
       console.error(error);
-      res.status(500).json({ success: false, error: 'Internal Server Error' });
+      res.status(500).json({ success: false, error: "Internal Server Error" });
     }
   }
 }

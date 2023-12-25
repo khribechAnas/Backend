@@ -12,7 +12,7 @@ router.get('/get/:offerId', offerController.getOfferById);
 
 router.put('/update/:offerId', offerController.updateOffer);
 
-router.delete('/remove/:offerId', offerController.deleteOffer);
+router.delete('/delete/:offerId', offerController.deleteOffer);
 
 
 module.exports = router;

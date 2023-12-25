@@ -9,7 +9,7 @@ router.get('/',categoryController.getAllCategories);
 router.post('/add', categoryController.addCategory);
 
 
-router.delete('/remove/:categoryId', categoryController.removeCategory);
+router.delete('/delete/:categoryId', categoryController.removeCategory);
 
 
 router.put('/update/:categoryId', categoryController.updateCategory);
