@@ -2,9 +2,18 @@ const mongoose = require("mongoose");
 
 const orderSchema = new mongoose.Schema(
   {
-    products: {
-      type: Array,
+    productId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Product",
       required: [true, "Please provide the list of products"],
+    },
+    userId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Account",
+      required: [true, "Please enter the user ID"],
+    },
+    list:{
+      type : Array
     },
     totalPrice: {
       type: Number,
@@ -18,10 +27,7 @@ const orderSchema = new mongoose.Schema(
       type: String,
       required: [true, "Please enter the payment method"],
     },
-    customer: {
-      type: String,
-      required: [true, "Please enter the customer name"],
-    },
+    
     discount: {
       type: Number,
       default: 0,

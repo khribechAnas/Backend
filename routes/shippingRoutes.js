@@ -3,19 +3,11 @@ const express = require("express");
 const router = express.Router();
 const shippingController = require("../controllers/shippingController");
 
-// Create a shipping
-router.post("/add", shippingController.createShipping);
-
-// Get a specific shipping
-router.get("/displayOne/:id", shippingController.getShipping);
-
-// Update a shipping
-router.put("/update/:id", shippingController.updateShipping);
-
-// Delete a shipping
-router.delete("/delete/:id", shippingController.deleteShipping);
-
-// Get all shippings
-router.get("/displayAll", shippingController.getAllShippings);
+router.get('/', shippingController.getAllShippings);
+router.get('/:id', shippingController.getShipping);
+router.get('/:orderId',shippingController.getShippingByOrderId);
+router.post('/add', shippingController.createShipping);
+router.put('/update/:id', shippingController.updateShipping);
+router.delete('/delete/:id', shippingController.deleteShipping);
 
 module.exports = router;

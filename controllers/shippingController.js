@@ -29,6 +29,21 @@ class ShippingController {
       res.status(500).json({ success: false, error: "Internal Server Error" });
     }
   }
+  async getShippingByOrderId(req, res) {
+    try {
+      const { orderId } = req.params;
+      const shipping = await ShippingModel.findOne({ orderId });
+
+      if (!shipping) {
+        return res.status(404).json({ success: false, error: 'Shipping not found for the specified order ID' });
+      }
+
+      res.status(200).json({ success: true, data: shipping });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ success: false, error: 'Internal Server Error' });
+    }
+  }
 
   async updateShipping(req, res) {
     try {

@@ -1,21 +1,14 @@
-// orderRoutes.js
-const express = require("express");
+const express = require('express');
 const router = express.Router();
-const orderController = require("../controllers/ordersController");
+const OrderController = require('../controllers/ordersController');
 
-// Create an order
-router.post("/add", orderController.createOrder);
+const orderController = new OrderController();
 
-// Get a specific order
-router.get("/displayOne/:id", orderController.getOrder);
-
-// Update an order
-router.put("/update/:id", orderController.updateOrder);
-
-// Delete an order
-router.delete("/delete/:id", orderController.deleteOrder);
-
-// Get all orders
-router.get("/displayAll", orderController.getAllOrders);
+router.get('/', orderController.getAllOrders);
+router.get('/:userId', orderController.getOrderByUserId);
+router.get('/:orderId',orderController.getOrderById);
+router.put('/update/:orderId', orderController.updateOrder);
+router.post('/add', orderController.addOrder);
+router.delete('/delete/:orderId', orderController.deleteOrder);
 
 module.exports = router;

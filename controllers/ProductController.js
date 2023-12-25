@@ -53,13 +53,39 @@ class ProductController {
 
   async chooseProductsByCategory(req, res) {
     try {
-      const { category } = req.params;
-      const products = await ProductModel.find({ category });
+      const { categoryId } = req.params;
+      const products = await ProductModel.find({ categoryId });
 
       res.status(200).json({ products });
     } catch (error) {
       console.error(error);
       res.status(500).json({ error: "Internal Server Error" });
+    }
+  }
+
+  async getAllProduct(req, res) {
+    try {
+      const products = await ProductModel.find();
+      res.status(200).json({ products });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: 'Internal Server Error' });
+    }
+  }
+
+  async getProductById(req, res) {
+    try {
+      const { productId } = req.params;
+      const product = await ProductModel.findById(productId);
+
+      if (!product) {
+        return res.status(404).json({ error: 'Product not found' });
+      }
+
+      res.status(200).json({ product });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: 'Internal Server Error' });
     }
   }
 }
