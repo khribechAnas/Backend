@@ -20,7 +20,7 @@ connectDB();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 //middelware
-app.use(authJwt);
+// app.use(authJwt);
 
 
 app.use("/auth", authRouter);
