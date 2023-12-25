@@ -10,7 +10,7 @@ const transactionsRoutes = require("./routes/transactionsRoutes.js");
 const accountRouter = require("./routes/accountRoutes");
 const ordersRouter = require("./routes/ordersRoutes.js");
 const offerRouter = require("./routes/offerRoutes.js");
-
+const authJwt = require('./middleware/secureRoute')
 dotenv.config();
 const PORT = process.env.PORT;
 
@@ -19,6 +19,9 @@ connectDB();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+//middelware
+app.use(authJwt);
+
 
 app.use("/auth", authRouter);
 app.use("/accounts", accountRouter);
