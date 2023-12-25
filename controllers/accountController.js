@@ -1,5 +1,4 @@
 const AccountModel = require("../models/AccountModel");
-const mongoose = require("mongoose");
 
 class AccountController {
   async getAllAccount(req, res) {
