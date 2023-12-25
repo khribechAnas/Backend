@@ -7,8 +7,11 @@ const productRouter = require("./routes/productRoutes.js");
 const notificationsRouter = require("./routes/notificationsRoutes.js");
 const shippingRoutes = require("./routes/shippingRoutes.js");
 const transactionsRoutes = require("./routes/transactionsRoutes.js");
-const accountRouter = require("./routes/accountRoutes");
-const ordersRouter = require("./routes/ordersRoutes.js");
+const accountRouter = require ('./routes/accountRoutes');
+const ordersRouter = require('./routes/ordersRoutes.js');
+const offerRouter = require('./routes/offerRoutes.js')
+
+
 
 dotenv.config();
 const PORT = process.env.PORT || 5001;
@@ -27,6 +30,8 @@ app.use("/notifications", notificationsRouter);
 app.use("/shipping", shippingRoutes);
 app.use("/transactions", transactionsRoutes);
 app.use("/orders", ordersRouter);
+app.use("/offers", offerRouter);
+
 
 app.get("/", (req, res) => {
   res.json("App worked successfully");
