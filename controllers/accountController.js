@@ -38,9 +38,11 @@ class AccountController {
   async updateAccount(req, res) {
     try {
       const { id } = req.params;
-      const account = await AccountModel.findByIdAndUpdate(id, req.body, {
-        new: true,
-      }); //new true afficher les donnees avant la mise ajour
+      const account = await AccountModel.findByIdAndUpdate(
+        id,
+        { ...req.body, password: await bcrypt.hash(req.body.password, 10) },
+        { new: true }
+      ); //new true afficher les donnees avant la mise ajour
       res.status(200).json(account);
     } catch (error) {
       console.error(error);
