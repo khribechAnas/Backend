@@ -1,5 +1,4 @@
-// ordersController.js
-const OrderModel = require('../models/OrderModel');
+const OrderModel = require("../models/OrderModel");
 
 class OrderController {
   async createOrder(req, res) {
@@ -8,7 +7,7 @@ class OrderController {
       res.status(201).json({ success: true, data: newOrder });
     } catch (error) {
       console.error(error);
-      res.status(500).json({ success: false, error: 'Internal Server Error' });
+      res.status(500).json({ success: false, error: "Internal Server Error" });
     }
   }
 
@@ -18,29 +17,35 @@ class OrderController {
       const order = await OrderModel.findById(id);
 
       if (!order) {
-        return res.status(404).json({ success: false, error: 'Order not found' });
+        return res
+          .status(404)
+          .json({ success: false, error: "Order not found" });
       }
 
       res.status(200).json({ success: true, data: order });
     } catch (error) {
       console.error(error);
-      res.status(500).json({ success: false, error: 'Internal Server Error' });
+      res.status(500).json({ success: false, error: "Internal Server Error" });
     }
   }
 
   async updateOrder(req, res) {
     try {
       const { id } = req.params;
-      const updatedOrder = await OrderModel.findByIdAndUpdate(id, req.body, { new: true });
+      const updatedOrder = await OrderModel.findByIdAndUpdate(id, req.body, {
+        new: true,
+      });
 
       if (!updatedOrder) {
-        return res.status(404).json({ success: false, error: 'Order not found' });
+        return res
+          .status(404)
+          .json({ success: false, error: "Order not found" });
       }
 
       res.status(200).json({ success: true, data: updatedOrder });
     } catch (error) {
       console.error(error);
-      res.status(500).json({ success: false, error: 'Internal Server Error' });
+      res.status(500).json({ success: false, error: "Internal Server Error" });
     }
   }
 
@@ -50,13 +55,21 @@ class OrderController {
       const deletedOrder = await OrderModel.findByIdAndRemove(id);
 
       if (!deletedOrder) {
-        return res.status(404).json({ success: false, error: 'Order not found' });
+        return res
+          .status(404)
+          .json({ success: false, error: "Order not found" });
       }
 
-      res.status(200).json({ success: true, message: 'Order deleted successfully', data: deletedOrder });
+      res
+        .status(200)
+        .json({
+          success: true,
+          message: "Order deleted successfully",
+          data: deletedOrder,
+        });
     } catch (error) {
       console.error(error);
-      res.status(500).json({ success: false, error: 'Internal Server Error' });
+      res.status(500).json({ success: false, error: "Internal Server Error" });
     }
   }
 
@@ -66,7 +79,7 @@ class OrderController {
       res.status(200).json({ success: true, data: orders });
     } catch (error) {
       console.error(error);
-      res.status(500).json({ success: false, error: 'Internal Server Error' });
+      res.status(500).json({ success: false, error: "Internal Server Error" });
     }
   }
 }

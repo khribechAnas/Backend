@@ -1,4 +1,4 @@
-const CategoryModel = require('../models/CategoryModel');
+const CategoryModel = require("../models/CategoryModel");
 
 class CategoryController {
   async addCategory(req, res) {
@@ -7,7 +7,7 @@ class CategoryController {
       res.status(201).json(newCategory);
     } catch (error) {
       console.error(error);
-      res.status(500).json({ error: 'Internal Server Error' });
+      res.status(500).json({ error: "Internal Server Error" });
     }
   }
 
@@ -17,29 +17,37 @@ class CategoryController {
       const removedCategory = await CategoryModel.findByIdAndRemove(categoryId);
 
       if (!removedCategory) {
-        return res.status(404).json({ error: 'Category not found' });
+        return res.status(404).json({ error: "Category not found" });
       }
 
-      res.status(200).json({ message: 'Category removed successfully', removedCategory });
+      res
+        .status(200)
+        .json({ message: "Category removed successfully", removedCategory });
     } catch (error) {
       console.error(error);
-      res.status(500).json({ error: 'Internal Server Error' });
+      res.status(500).json({ error: "Internal Server Error" });
     }
   }
 
   async updateCategory(req, res) {
     try {
       const { categoryId } = req.params;
-      const updatedCategory = await CategoryModel.findByIdAndUpdate(categoryId, req.body, { new: true });
+      const updatedCategory = await CategoryModel.findByIdAndUpdate(
+        categoryId,
+        req.body,
+        { new: true }
+      );
 
       if (!updatedCategory) {
-        return res.status(404).json({ error: 'Category not found' });
+        return res.status(404).json({ error: "Category not found" });
       }
 
-      res.status(200).json({ message: 'Category updated successfully', updatedCategory });
+      res
+        .status(200)
+        .json({ message: "Category updated successfully", updatedCategory });
     } catch (error) {
       console.error(error);
-      res.status(500).json({ error: 'Internal Server Error' });
+      res.status(500).json({ error: "Internal Server Error" });
     }
   }
 }

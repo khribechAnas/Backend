@@ -1,4 +1,4 @@
-const TransactionsModel = require('../models/TransactionsModel');
+const TransactionsModel = require("../models/TransactionsModel");
 
 class TransactionsController {
   async createTransaction(req, res) {
@@ -6,12 +6,12 @@ class TransactionsController {
       const newTransaction = await TransactionsModel.create(req.body);
       res.status(201).json({
         success: true,
-        message: 'Transaction created successfully',
+        message: "Transaction created successfully",
         transaction: newTransaction,
       });
     } catch (error) {
       console.error(error);
-      res.status(500).json({ error: 'Internal Server Error' });
+      res.status(500).json({ error: "Internal Server Error" });
     }
   }
 
@@ -21,7 +21,7 @@ class TransactionsController {
       res.status(200).json(transactions);
     } catch (error) {
       console.error(error);
-      res.status(500).json({ error: 'Internal Server Error' });
+      res.status(500).json({ error: "Internal Server Error" });
     }
   }
 
@@ -31,29 +31,33 @@ class TransactionsController {
       const transaction = await TransactionsModel.findById(id);
 
       if (!transaction) {
-        return res.status(404).json({ error: 'Transaction not found' });
+        return res.status(404).json({ error: "Transaction not found" });
       }
 
       res.status(200).json(transaction);
     } catch (error) {
       console.error(error);
-      res.status(500).json({ error: 'Internal Server Error' });
+      res.status(500).json({ error: "Internal Server Error" });
     }
   }
 
   async updateTransaction(req, res) {
     try {
       const { id } = req.params;
-      const updatedTransaction = await TransactionsModel.findByIdAndUpdate(id, req.body, { new: true });
+      const updatedTransaction = await TransactionsModel.findByIdAndUpdate(
+        id,
+        req.body,
+        { new: true }
+      );
 
       if (!updatedTransaction) {
-        return res.status(404).json({ error: 'Transaction not found' });
+        return res.status(404).json({ error: "Transaction not found" });
       }
 
       res.status(200).json(updatedTransaction);
     } catch (error) {
       console.error(error);
-      res.status(500).json({ error: 'Internal Server Error' });
+      res.status(500).json({ error: "Internal Server Error" });
     }
   }
 
@@ -63,13 +67,16 @@ class TransactionsController {
       const deletedTransaction = await TransactionsModel.findByIdAndDelete(id);
 
       if (!deletedTransaction) {
-        return res.status(404).json({ error: 'Transaction not found' });
+        return res.status(404).json({ error: "Transaction not found" });
       }
 
-      res.status(200).json({ message: 'Transaction deleted successfully', deletedTransaction });
+      res.status(200).json({
+        message: "Transaction deleted successfully",
+        deletedTransaction,
+      });
     } catch (error) {
       console.error(error);
-      res.status(500).json({ error: 'Internal Server Error' });
+      res.status(500).json({ error: "Internal Server Error" });
     }
   }
 }
