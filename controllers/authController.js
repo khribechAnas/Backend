@@ -28,16 +28,19 @@ class AuthController {
         return res.status(401).json({ error: "Invalid email or password" });
       }
 
-      const samePass = bcrypt.compare(password, process.env.SECRET_KEY)
+      const samePass = bcrypt.compare(password, account.password);
       if (!samePass) {
         return res.status(401).json({ error: "password not correct" });
       }
 
       // Generate a JWT token
-      const token = jwt.sign({ accountId: account._id }, process.env.SECRET_KEY);
+      const token = jwt.sign(
+        { accountId: account._id },
+        process.env.SECRET_KEY
+      );
 
-      if(email === process.env.ADMIN_EMAIL){
-          account.isAdmin = true
+      if (email === process.env.ADMIN_EMAIL) {
+        account.isAdmin = true;
       }
 
       // Update last login timestamp
