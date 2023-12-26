@@ -28,7 +28,7 @@ class AuthController {
         return res.status(401).json({ error: "Invalid email or password" });
       }
 
-      const samePass = bcrypt.compare(password, account.password);
+      const samePass = await bcrypt.compare(password, account.password);
       if (!samePass) {
         return res.status(401).json({ error: "password not correct" });
       }
