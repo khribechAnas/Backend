@@ -7,6 +7,7 @@ class AuthController {
     try {
       const { fullname, email, password } = req.body;
       const hashedPassword = await bcrypt.hash(password, 10);
+
       const newAccount = await AccountModel.create({
         fullname,
         email,
@@ -28,7 +29,7 @@ class AuthController {
         return res.status(401).json({ error: "Invalid email or password" });
       }
 
-      const samePass = bcrypt.compare(password, account.password);
+      const samePass = await bcrypt.compare(password, account.password);
       if (!samePass) {
         return res.status(401).json({ error: "password not correct" });
       }
