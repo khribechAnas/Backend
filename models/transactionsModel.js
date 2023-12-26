@@ -4,12 +4,12 @@ const transactionsSchema = new mongoose.Schema(
   {
     orderId: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'Order',
+      ref: "Order",
       required: [true, "Please enter the order ID"],
     },
     userId: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'Account',
+      ref: "Account",
       required: [true, "Please enter the user ID"],
     },
     amount: {
