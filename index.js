@@ -7,13 +7,10 @@ const productRouter = require("./routes/productRoutes.js");
 const notificationsRouter = require("./routes/notificationsRoutes.js");
 const shippingRoutes = require("./routes/shippingRoutes.js");
 const transactionsRoutes = require("./routes/transactionsRoutes.js");
-const accountRouter = require ('./routes/accountRoutes');
-const ordersRouter = require('./routes/ordersRoutes.js')
-
-
-// const ordersRouter = require('./routes/ordersRoutes.js')
 const accountRouter = require("./routes/accountRoutes");
-
+const ordersRouter = require("./routes/ordersRoutes.js");
+const offerRouter = require("./routes/offerRoutes.js");
+const authJwt = require('./middleware/secureRoute')
 dotenv.config();
 const PORT = process.env.PORT;
 
@@ -22,6 +19,9 @@ connectDB();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+//middelware
+// app.use(authJwt);
+
 
 app.use("/auth", authRouter);
 app.use("/accounts", accountRouter);
@@ -31,7 +31,7 @@ app.use("/notifications", notificationsRouter);
 app.use("/shipping", shippingRoutes);
 app.use("/transactions", transactionsRoutes);
 app.use("/orders", ordersRouter);
-
+app.use("/offers", offerRouter);
 
 app.get("/", (req, res) => {
   res.json("App worked successfully");
