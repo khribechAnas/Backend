@@ -1,5 +1,6 @@
 const AccountModel = require("../models/AccountModel");
 const jwt = require("jsonwebtoken");
+const nodemailer = require("nodemailer");
 const bcrypt = require("bcryptjs");
 
 class AuthController {
@@ -12,6 +13,34 @@ class AuthController {
         email,
         password: hashedPassword,
       });
+
+      // Envoi de l'e-mail de confirmation
+      const transporter = nodemailer.createTransport({
+        service: "gmail",
+        auth: {
+          user: process.env.addEmail,
+          pass: process.env.passapp,
+        },
+      });
+
+      // Contenu du message
+      const message = {
+        from: process.env.addEmail,
+        to: email,
+        subject: "Confirmation ",
+        text: "Thank you for signing up! Your account has been successfully created.",
+      };
+
+      // Envoi du message
+      transporter.sendMail(message, (err, info) => {
+        if (err) {
+          console.error("Error sending confirmation email", err);
+        } else {
+          console.log("confirmation sending email:", info.response);
+        }
+      });
+
+      // Redirection vers la page de connexion
       res.status(201).json(newAccount);
     } catch (error) {
       console.error(error);
