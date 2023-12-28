@@ -17,10 +17,11 @@ const PORT = process.env.PORT;
 const app = express();
 connectDB();
 
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.use("/auth", authJwt, authRouter);
+app.use("/auth", authRouter);
 app.use("/accounts", authJwt, accountRouter);
 app.use("/categories", authJwt, categoryRouter);
 app.use("/products", authJwt, productRouter);

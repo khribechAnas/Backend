@@ -6,14 +6,36 @@ class AuthController {
   async register(req, res) {
     try {
       const { fullname, email, password } = req.body;
+      const existingAccount = await AccountModel.findOne({ email });
+
+      if (existingAccount) {
+        return res
+          .status(400)
+          .json({ error: "Email address is already registered" });
+      }
       const hashedPassword = await bcrypt.hash(password, 10);
+
+      function getRole() {
+        if (email === process.env.ADMIN_EMAIL) {
+          return "admin";
+        } else if (email === process.env.MODERATOR_EMAIL) {
+          return "moderator";
+        } else {
+          return "user";
+        }
+      }
+
       const newAccount = await AccountModel.create({
         fullname,
         email,
         password: hashedPassword,
+        role: getRole(),
       });
+
       res.status(201).json(newAccount);
     } catch (error) {
+      console.error(error);
+
       console.error(error);
       res.status(500).json({ error: "Internal Server Error" });
     }
@@ -38,10 +60,6 @@ class AuthController {
         { accountId: account._id },
         process.env.SECRET_KEY
       );
-
-      if (email === process.env.ADMIN_EMAIL) {
-        account.isAdmin = true;
-      }
 
       // Update last login timestamp
       account.lastLogin = new Date();
