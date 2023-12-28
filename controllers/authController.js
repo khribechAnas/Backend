@@ -81,10 +81,10 @@ class AuthController {
       if (!samePass) {
         return res.status(401).json({ error: "password not correct" });
       }
-      
+
       // Generate a JWT token
       const token = jwt.sign(
-        { accountId: account._id },
+        { accountId: account._id, role: account.role },
         process.env.SECRET_KEY
       );
 
