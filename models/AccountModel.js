@@ -5,10 +5,12 @@ const accountSchema = new mongoose.Schema(
     fullname: {
       type: String,
       required: [true, "please enter the fullname"],
+      unique: [true, "exist fullname"],
     },
     email: {
       type: String,
       required: [true, "please enter the email"],
+      index: true,
       unique: true,
     },
     password: {
@@ -21,9 +23,10 @@ const accountSchema = new mongoose.Schema(
     address: {
       type: String,
     },
-    isAdmin: {
-      type: Boolean,
-      default: false,
+    role: {
+      type: String,
+      enum: ['user', 'admin', 'moderator'],
+      default: 'user',
     },
     lastLogin: {
       type: Date,
