@@ -10,7 +10,7 @@ const transactionsRoutes = require("./routes/transactionsRoutes.js");
 const accountRouter = require("./routes/accountRoutes");
 const ordersRouter = require("./routes/ordersRoutes.js");
 const offerRouter = require("./routes/offerRoutes.js");
-const authJwt = require('./middleware/secureRoute')
+const authJwt = require("./middleware/secureRoute");
 dotenv.config();
 const PORT = process.env.PORT;
 
@@ -19,19 +19,16 @@ connectDB();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-//middelware
-// app.use(authJwt);
-
 
 app.use("/auth", authRouter);
-app.use("/accounts", accountRouter);
-app.use("/categories", categoryRouter);
-app.use("/products", productRouter);
-app.use("/notifications", notificationsRouter);
-app.use("/shipping", shippingRoutes);
-app.use("/transactions", transactionsRoutes);
-app.use("/orders", ordersRouter);
-app.use("/offers", offerRouter);
+app.use("/accounts", authJwt, accountRouter);
+app.use("/categories", authJwt, categoryRouter);
+app.use("/products", authJwt, productRouter);
+app.use("/notifications", authJwt, notificationsRouter);
+app.use("/shipping", authJwt, shippingRoutes);
+app.use("/transactions", authJwt, transactionsRoutes);
+app.use("/orders", authJwt, ordersRouter);
+app.use("/offers", authJwt, offerRouter);
 
 app.get("/", (req, res) => {
   res.json("App worked successfully");
