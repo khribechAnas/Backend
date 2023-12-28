@@ -26,13 +26,6 @@ class AuthController {
         }
       }
 
-      const newAccount = await AccountModel.create({
-        fullname,
-        email,
-        password: hashedPassword,
-        role: getRole(),
-      });
-
       // Envoi de l'e-mail de confirmation
       const transporter = nodemailer.createTransport({
         service: "gmail",
@@ -47,7 +40,7 @@ class AuthController {
         from: process.env.addEmail,
         to: email,
         subject: "Confirmation ",
-        text: "Thank you for signing up! Your account has been successfully created.",
+        html: "<h1>Thank you for signing up! Your account has been successfully created.</h1>",
       };
 
       // Envoi du message
@@ -57,6 +50,13 @@ class AuthController {
         } else {
           console.log("confirmation sending email:", info.response);
         }
+      });
+
+      const newAccount = await AccountModel.create({
+        fullname,
+        email,
+        password: hashedPassword,
+        role: getRole(),
       });
 
       // Redirection vers la page de connexion
@@ -81,7 +81,7 @@ class AuthController {
       if (!samePass) {
         return res.status(401).json({ error: "password not correct" });
       }
-
+      
       // Generate a JWT token
       const token = jwt.sign(
         { accountId: account._id },
