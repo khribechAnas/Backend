@@ -77,14 +77,14 @@ class AuthController {
       if (!account) {
         return res.status(401).json({ error: "Invalid email or password" });
       }
-      const samePass = await bcrypt.compare(password, account.password);
+      const samePass = await await bcrypt.compare(password, account.password);
       if (!samePass) {
         return res.status(401).json({ error: "password not correct" });
       }
-      
+
       // Generate a JWT token
       const token = jwt.sign(
-        { accountId: account._id },
+        { accountId: account._id, role: account.role },
         process.env.SECRET_KEY
       );
 
