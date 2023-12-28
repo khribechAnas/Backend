@@ -1,5 +1,6 @@
 const AccountModel = require("../models/AccountModel");
 const jwt = require("jsonwebtoken");
+const nodemailer = require("nodemailer");
 const bcrypt = require("bcryptjs");
 
 class AuthController {
@@ -25,6 +26,32 @@ class AuthController {
         }
       }
 
+      // Envoi de l'e-mail de confirmation
+      const transporter = nodemailer.createTransport({
+        service: "gmail",
+        auth: {
+          user: process.env.addEmail,
+          pass: process.env.passapp,
+        },
+      });
+
+      // Contenu du message
+      const message = {
+        from: process.env.addEmail,
+        to: email,
+        subject: "Confirmation ",
+        html: "<h1>Thank you for signing up! Your account has been successfully created.</h1>",
+      };
+
+      // Envoi du message
+      transporter.sendMail(message, (err, info) => {
+        if (err) {
+          console.error("Error sending confirmation email", err);
+        } else {
+          console.log("confirmation sending email:", info.response);
+        }
+      });
+
       const newAccount = await AccountModel.create({
         fullname,
         email,
@@ -32,6 +59,7 @@ class AuthController {
         role: getRole(),
       });
 
+      // Redirection vers la page de connexion
       res.status(201).json(newAccount);
     } catch (error) {
       console.error(error);
@@ -49,12 +77,11 @@ class AuthController {
       if (!account) {
         return res.status(401).json({ error: "Invalid email or password" });
       }
-
       const samePass = await bcrypt.compare(password, account.password);
       if (!samePass) {
         return res.status(401).json({ error: "password not correct" });
       }
-
+      
       // Generate a JWT token
       const token = jwt.sign(
         { accountId: account._id },
