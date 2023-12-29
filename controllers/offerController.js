@@ -13,8 +13,25 @@ class OfferController {
 
   async getOffers(req, res) {
     try {
-      const offers = await offerModel.find();
-      res.status(200).json(offers);
+      const page = parseInt(req.query.page) || 1;
+      const pageSize = parseInt(req.query.pageSize) || 3;
+      const itemsPerPage = parseInt(req.query.itemsPerPage) || 2;
+      const totalItems = pageSize * itemsPerPage;
+      const skip = (page - 1) * totalItems;
+      //Filters
+      const filters = {};
+      if (req.query.code) {
+        filters.code = req.query.code;
+      }
+      const offers = await offerModel.find(filters)
+        .skip(skip)
+        .limit(totalItems);
+      //pagination
+      const paginatedOffers = [];
+      for (let i = 0; i < totalItems; i += itemsPerPage) {
+        paginatedOffers.push(offers.slice(i, i + itemsPerPage));
+        return res.status(200).json({ paginatedOffers });
+      }
     } catch (error) {
       console.error(error);
       res.status(500).json({ error: "Internal Server Error" });

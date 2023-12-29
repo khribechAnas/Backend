@@ -35,12 +35,10 @@ class ShippingController {
       const shipping = await ShippingModel.findOne({ orderId });
 
       if (!shipping) {
-        return res
-          .status(404)
-          .json({
-            success: false,
-            error: "Shipping not found for the specified order ID",
-          });
+        return res.status(404).json({
+          success: false,
+          error: "Shipping not found for the specified order ID",
+        });
       }
 
       res.status(200).json({ success: true, data: shipping });
@@ -83,13 +81,11 @@ class ShippingController {
           .json({ success: false, error: "Shipping not found" });
       }
 
-      res
-        .status(200)
-        .json({
-          success: true,
-          message: "Shipping deleted successfully",
-          data: deletedShipping,
-        });
+      res.status(200).json({
+        success: true,
+        message: "Shipping deleted successfully",
+        data: deletedShipping,
+      });
     } catch (error) {
       console.error(error);
       res.status(500).json({ success: false, error: "Internal Server Error" });
@@ -98,8 +94,31 @@ class ShippingController {
 
   async getAllShippings(req, res) {
     try {
-      const shippings = await ShippingModel.find();
-      res.status(200).json({ success: true, data: shippings });
+      const page = parseInt(req.query.page) || 1;
+      const pageSize = parseInt(req.query.pageSize) || 3;
+      const itemsPerPage = parseInt(req.query.itemsPerPage) || 2;
+      const totalItems = pageSize * itemsPerPage;
+      const skip = (page - 1) * totalItems;
+
+      // Filters
+      const filters = {};
+      if (req.query.cost) {
+        filters.cost = req.query.cost;
+      }
+      if (req.query.regions) {
+        filters.regions = req.query.regions;
+      }
+
+      const shippings = await ShippingModel.find(filters)
+        .skip(skip)
+        .limit(totalItems);
+
+      // Pagination
+      const paginatedShipping = [];
+      for (let i = 0; i < totalItems; i += itemsPerPage) {
+        paginatedShipping.push(shippings.slice(i, i + itemsPerPage));
+        return res.status(200).json({ paginatedShipping });
+      }
     } catch (error) {
       console.error(error);
       res.status(500).json({ success: false, error: "Internal Server Error" });

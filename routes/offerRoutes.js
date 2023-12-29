@@ -6,7 +6,7 @@ const offerController = new OfferController();
 
 router.post('/add', offerController.createOffer);
 
-router.get('/get', offerController.getOffers);
+router.get('/', offerController.getOffers);
 
 router.get('/get/:offerId', offerController.getOfferById);
 
