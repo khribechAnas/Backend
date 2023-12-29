@@ -10,10 +10,10 @@ router.get("/:productId", productController.getProductById);
 router.get("/choose/:categoryId", productController.chooseProductsByCategory);
 router.post(
   "/add",
-  verifyRoles(["admin", "moderator"]),
+  verifyRoles(["admin"]),
   productController.addProduct
 );
-router.delete("/delete/:productId", productController.removeProduct);
-router.put("/update/:productId", productController.updateProduct);
+router.delete("/delete/:productId",verifyRoles(["admin"]), productController.removeProduct);
+router.put("/update/:productId",verifyRoles(["admin", "moderator"]), productController.updateProduct);
 
 module.exports = router;
