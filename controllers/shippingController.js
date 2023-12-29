@@ -35,12 +35,10 @@ class ShippingController {
       const shipping = await ShippingModel.findOne({ orderId });
 
       if (!shipping) {
-        return res
-          .status(404)
-          .json({
-            success: false,
-            error: "Shipping not found for the specified order ID",
-          });
+        return res.status(404).json({
+          success: false,
+          error: "Shipping not found for the specified order ID",
+        });
       }
 
       res.status(200).json({ success: true, data: shipping });
@@ -83,13 +81,11 @@ class ShippingController {
           .json({ success: false, error: "Shipping not found" });
       }
 
-      res
-        .status(200)
-        .json({
-          success: true,
-          message: "Shipping deleted successfully",
-          data: deletedShipping,
-        });
+      res.status(200).json({
+        success: true,
+        message: "Shipping deleted successfully",
+        data: deletedShipping,
+      });
     } catch (error) {
       console.error(error);
       res.status(500).json({ success: false, error: "Internal Server Error" });

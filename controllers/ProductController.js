@@ -65,11 +65,33 @@ class ProductController {
 
   async getAllProduct(req, res) {
     try {
-      const products = await ProductModel.find();
-      res.status(200).json({ products });
+      const page = parseInt(req.query.page) || 1;
+      const pageSize = parseInt(req.query.pageSize) || 3;
+      const itemsPerPage = parseInt(req.query.itemsPerPage) || 2;
+
+      // Calculate the total number of items to retrieve
+      const totalItems = pageSize * itemsPerPage;
+
+      // Calculate the skip value based on the total items and page number
+      const skip = (page - 1) * totalItems;
+      //Filters
+      const filters = {};
+      if (req.query.title) {
+        filters.title = req.query.title;
+      }
+      // Fetch a subset of products using pagination parameters
+      const products = await ProductModel.find(filters).skip(skip).limit(totalItems);
+
+      // Return the paginated result, dividing the items into pages
+      const paginatedProducts = [];
+      for (let i = 0; i < totalItems; i += itemsPerPage) {
+        paginatedProducts.push(products.slice(i, i + itemsPerPage));
+      }
+
+      return res.status(200).json({ paginatedProducts });
     } catch (error) {
       console.error(error);
-      res.status(500).json({ error: "Internal Server Error" });
+      return res.status(500).json({ error: "Internal Server Error" });
     }
   }
 

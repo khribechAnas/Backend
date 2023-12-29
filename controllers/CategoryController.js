@@ -52,11 +52,29 @@ class CategoryController {
   }
   async getAllCategories(req, res) {
     try {
-      const categories = await CategoryModel.find();
-      res.status(200).json({ categories });
+      const page = parseInt(req.query.page) || 1;
+      const pageSize = parseInt(req.query.pageSize) || 3;
+      const itemsPerPage = parseInt(req.query.itemsPerPage) || 2;
+      const totalItems = pageSize * itemsPerPage;
+      const skip = (page - 1) * totalItems;
+      //Filters
+      const filters = {};
+      if (req.query.name) {
+        filters.name = req.query.name;
+      }
+      const categories = await CategoryModel.find(filters)
+        .skip(skip)
+        .limit(totalItems);
+      //pagination
+      const paginatedCategories = [];
+      for (let i = 0; i < totalItems; i += itemsPerPage) {
+        paginatedCategories.push(categories.slice(i, i + itemsPerPage));
+      }
+
+      return res.status(200).json({ paginatedCategories });
     } catch (error) {
       console.error(error);
-      res.status(500).json({ error: 'Internal Server Error' });
+      res.status(500).json({ error: "Internal Server Error" });
     }
   }
 }
