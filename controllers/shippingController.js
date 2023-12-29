@@ -94,31 +94,8 @@ class ShippingController {
 
   async getAllShippings(req, res) {
     try {
-      const page = parseInt(req.query.page) || 1;
-      const pageSize = parseInt(req.query.pageSize) || 3;
-      const itemsPerPage = parseInt(req.query.itemsPerPage) || 2;
-      const totalItems = pageSize * itemsPerPage;
-      const skip = (page - 1) * totalItems;
-
-      // Filters
-      const filters = {};
-      if (req.query.cost) {
-        filters.cost = req.query.cost;
-      }
-      if (req.query.regions) {
-        filters.regions = req.query.regions;
-      }
-
-      const shippings = await ShippingModel.find(filters)
-        .skip(skip)
-        .limit(totalItems);
-
-      // Pagination
-      const paginatedShipping = [];
-      for (let i = 0; i < totalItems; i += itemsPerPage) {
-        paginatedShipping.push(shippings.slice(i, i + itemsPerPage));
-        return res.status(200).json({ paginatedShipping });
-      }
+      const shippings = await ShippingModel.find();
+      res.status(200).json({ success: true, data: shippings });
     } catch (error) {
       console.error(error);
       res.status(500).json({ success: false, error: "Internal Server Error" });
