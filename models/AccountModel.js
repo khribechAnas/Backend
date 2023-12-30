@@ -25,8 +25,8 @@ const accountSchema = new mongoose.Schema(
     },
     role: {
       type: String,
-      enum: ['user', 'admin', 'moderator'],
-      default: 'user',
+      enum: ["user", "admin", "moderator"],
+      default: "user",
     },
     lastLogin: {
       type: Date,
@@ -42,6 +42,9 @@ const accountSchema = new mongoose.Schema(
     resetPasswordExpires: {
       type: Date,
       default: Date.now,
+    },
+    verificationCode: {
+      type: String,
     },
   },
   { timestamps: true }
