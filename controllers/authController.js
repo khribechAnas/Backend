@@ -1,7 +1,8 @@
 const AccountModel = require("../models/AccountModel");
 const jwt = require("jsonwebtoken");
-const nodemailer = require("nodemailer");
 const bcrypt = require("bcryptjs");
+const { sendEmail } = require("../utils/sendEmail");
+const { generateString } = require("../utils/generateString");
 
 class AuthController {
   async register(req, res) {
@@ -26,31 +27,10 @@ class AuthController {
         }
       }
 
-      // Envoi de l'e-mail de confirmation
-      const transporter = nodemailer.createTransport({
-        service: "gmail",
-        auth: {
-          user: process.env.addEmail,
-          pass: process.env.passapp,
-        },
-      });
-
-      // Contenu du message
-      const message = {
-        from: process.env.addEmail,
-        to: email,
-        subject: "Confirmation ",
-        html: "<h1>Thank you for signing up! Your account has been successfully created.</h1>",
-      };
-
-      // Envoi du message
-      transporter.sendMail(message, (err, info) => {
-        if (err) {
-          console.error("Error sending confirmation email", err);
-        } else {
-          console.log("confirmation sending email:", info.response);
-        }
-      });
+      sendEmail(
+        email,
+        "<h1>Thank you for signing up! Your account has been successfully created.</h1>"
+      );
 
       const newAccount = await AccountModel.create({
         fullname,
@@ -62,8 +42,6 @@ class AuthController {
       // Redirection vers la page de connexion
       res.status(201).json(newAccount);
     } catch (error) {
-      console.error(error);
-
       console.error(error);
       res.status(500).json({ error: "Internal Server Error" });
     }
@@ -82,18 +60,55 @@ class AuthController {
         return res.status(401).json({ error: "password not correct" });
       }
 
-      // Generate a JWT token
-      const token = jwt.sign(
-        { accountId: account._id, role: account.role },
-        process.env.SECRET_KEY
-      );
+      //store the user in a session
+      req.session.user = { accountId: account._id, email: account.email };
+
+      // send code
+      const code = generateString();
+      const message = `Your verification Code is this: ${code}`;
+      sendEmail(email, message);
 
       // Update last login timestamp
       account.lastLogin = new Date();
+      account.verificationCode = code;
       await account.save();
 
       // Send the token and account details in the response
-      res.status(200).json({ token, account });
+      res.status(200).json({ account });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: "Internal Server Error" });
+    }
+  }
+
+  async verifyCode(req, res) {
+    try {
+      const { code } = req.body;
+      const user = req.session.user;
+
+      if (!user) {
+        return res.status(401).json({ error: "User not authenticated" });
+      }
+      const account = await AccountModel.findById(user.accountId);
+      if (!account) {
+        return res.status(401).json({ error: "Invalid account" });
+      }
+      const storedVerificationCode = account.verificationCode;
+      if (code === storedVerificationCode) {
+        const token = jwt.sign(
+          { accountId: account._id, role: account.role },
+          process.env.SECRET_KEY
+        );
+        res.json({
+          success: true,
+          token,
+          message: "Verification successful. User authenticated.",
+        });
+      } else {
+        res
+          .status(401)
+          .json({ success: false, message: "Invalid verification code" });
+      }
     } catch (error) {
       console.error(error);
       res.status(500).json({ error: "Internal Server Error" });
