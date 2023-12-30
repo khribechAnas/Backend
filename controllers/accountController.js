@@ -3,7 +3,28 @@ const AccountModel = require("../models/AccountModel");
 class AccountController {
   async getAllAccount(req, res) {
     try {
-      const accounts = await AccountModel.find({});
+      //pagination
+      const page = parseInt(req.query.page) || 1;
+      const pageSize = parseInt(req.query.pageSize) || 5;
+      const skip = (page - 1) * pageSize;
+      // const accounts = await AccountModel.find().skip(skip).limit(pageSize);
+      // Filters
+      const filters = {};
+      if (req.query.fullname) {
+        filters.fullname = req.query.fullname;
+      }
+  
+      if (req.query.email) {
+        filters.email = req.query.email;
+      }
+  
+      if (req.query.role) {
+        filters.role = req.query.role;
+      }
+
+      const accounts = await AccountModel.find(filters)
+        .skip(skip)
+        .limit(pageSize);
       res.status(200).json(accounts);
     } catch (error) {
       console.error(error);
