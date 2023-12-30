@@ -1,5 +1,6 @@
 const express = require("express");
 const dotenv = require("dotenv");
+const session = require('express-session');
 const connectDB = require("./db/connect.js");
 const authRouter = require("./routes/authRoutes.js");
 const categoryRouter = require("./routes/categoryRoutes.js");
@@ -19,6 +20,11 @@ connectDB();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(session({
+  secret: 'very---secret',
+  resave: false,
+  saveUninitialized: false
+}));
 
 app.use("/auth", authRouter);
 app.use("/accounts", authJwt, accountRouter);
