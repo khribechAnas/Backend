@@ -2,8 +2,48 @@ const ProductModel = require("../models/ProductModel");
 
 class ProductController {
   async addProduct(req, res) {
+    const { title } = req.body;
+    console.log(req.files);
+
     try {
-      const newProduct = await ProductModel.create(req.body);
+      const newProduct = await ProductModel.create({ title });
+
+      const productId = newProduct._id;
+      const imageCoverUrl = await uploadFileToStorage(
+        req.files.thumbnail[0],
+        `products/${productId}/${req.files.thumbnail[0].originalname}`
+      );
+
+      let imagesUrls = [];
+
+      if (req.files.images) {
+        // If there are multiple images, handle them in a loop
+        imagesUrls = await Promise.all(
+          req.files.images.map(async (file) =>
+            uploadFileToStorage(
+              file,
+              `products/${productId}/listImages/${file.originalname}`
+            )
+          )
+        );
+      } else if (req.files.image) {
+        // If there is only one image, handle it directly
+        imagesUrls.push(
+          await uploadFileToStorage(
+            req.files.image[0],
+            `products/${productId}/listImages/${req.files.image[0].originalname}`
+          )
+        );
+      }
+
+      if (newProduct.thumbnail) {
+        newProduct.thumbnail = imageCoverUrl;
+      }
+
+      newProduct.images = imagesUrls;
+
+      await newProduct.save();
+
       res.status(201).json(newProduct);
     } catch (error) {
       console.error(error);
@@ -80,7 +120,9 @@ class ProductController {
         filters.title = req.query.title;
       }
       // Fetch a subset of products using pagination parameters
-      const products = await ProductModel.find(filters).skip(skip).limit(totalItems);
+      const products = await ProductModel.find(filters)
+        .skip(skip)
+        .limit(totalItems);
 
       // Return the paginated result, dividing the items into pages
       const paginatedProducts = [];
