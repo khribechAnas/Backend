@@ -1,6 +1,6 @@
 // ordersController.js
 const OrderModel = require("../models/orderModel");
-
+const stripe = require("stripe")(process.env.STRIPE_KEY);
 class OrderController {
   async getAllOrders(req, res) {
     try {
@@ -8,7 +8,7 @@ class OrderController {
       res.status(200).json({ orders });
     } catch (error) {
       console.error(error);
-      res.status(500).json({ error: 'Internal Server Error' });
+      res.status(500).json({ error: "Internal Server Error" });
     }
   }
 
@@ -50,6 +50,33 @@ class OrderController {
     try {
       const newOrder = await OrderModel.create(req.body);
       res.status(201).json(newOrder);
+
+      ///
+      // const session = await stripe.checkout.sessions.create({
+      //   line_items: [
+      //     {
+      //       // name: req.user.name,
+      //       // price: cart.cartItems[0]._id,
+      //       // currency: "mad",
+      //       // quantity: 1,
+      //       price_data: {
+      //         currency: "mad",
+      //         product_data: {
+      //           name: "req.body.userId",
+      //         },
+      //         unit_amount: 100 * 100,
+      //       },
+      //       quantity: 1,
+      //     },
+      //   ],
+      //   mode: "payment",
+      //   success_url: `${req.protocol}://${req.get("host")}/orders`,
+      //   cancel_url: `${req.protocol}://${req.get("host")}/cart`,
+      //   // customer_email: req.user.email,
+      //   // client_reference_id: req.params.cartId,
+      //   // metadata: req.body.shippingAddress,
+      // });
+      ///
     } catch (error) {
       console.error(error);
       res.status(500).json({ error: "Internal Server Error" });
