@@ -7,11 +7,18 @@ const categoryController = new CategoryController();
 
 router.get("/", categoryController.getAllCategories);
 
-router.post("/add",verifyRoles(["admin"]), categoryController.addCategory);
+router.post("/add", verifyRoles(["admin"]), categoryController.addCategory);
 
-router.delete('/delete/:categoryId',verifyRoles(["admin"]), categoryController.removeCategory);
+router.delete(
+  "/delete/:categoryId",
+  verifyRoles(["admin"]),
+  categoryController.removeCategory
+);
 
-
-router.put('/update/:categoryId',verifyRoles(["admin", "moderator"]), categoryController.updateCategory);
+router.put(
+  "/update/:categoryId",
+  verifyRoles(["admin", "moderator"]),
+  categoryController.updateCategory
+);
 
 module.exports = router;

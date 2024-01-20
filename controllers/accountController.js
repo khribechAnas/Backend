@@ -13,11 +13,11 @@ class AccountController {
       if (req.query.fullname) {
         filters.fullname = req.query.fullname;
       }
-  
+
       if (req.query.email) {
         filters.email = req.query.email;
       }
-  
+
       if (req.query.role) {
         filters.role = req.query.role;
       }
