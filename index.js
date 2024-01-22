@@ -12,7 +12,7 @@ const accountRouter = require("./routes/accountRoutes");
 const ordersRouter = require("./routes/ordersRoutes.js");
 const offerRouter = require("./routes/offerRoutes.js");
 const authJwt = require("./middleware/secureRoute");
-const stripeRouter = require("./routes/stripeRoutes");
+const paymentRouter = require("./routes/paymentRoutes.js");
 dotenv.config();
 const PORT = process.env.PORT;
 
@@ -28,7 +28,7 @@ app.use(
     saveUninitialized: false,
   })
 );
-// app.use("/payment",stripeRouter);
+
 app.use("/auth", authRouter);
 app.use("/accounts", authJwt, accountRouter);
 app.use("/categories", authJwt, categoryRouter);
@@ -38,7 +38,7 @@ app.use("/shipping", authJwt, shippingRoutes);
 app.use("/transactions", authJwt, transactionsRoutes);
 app.use("/orders", authJwt, ordersRouter);
 app.use("/offers", authJwt, offerRouter);
-app.use("/stripe", stripeRouter);
+app.use("/stripe", paymentRouter);
 
 app.get("/", (req, res) => {
   res.json("App worked successfully");
