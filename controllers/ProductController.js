@@ -80,7 +80,9 @@ class ProductController {
         filters.title = req.query.title;
       }
       // Fetch a subset of products using pagination parameters
-      const products = await ProductModel.find(filters).skip(skip).limit(totalItems);
+      const products = await ProductModel.find(filters)
+        .skip(skip)
+        .limit(totalItems);
 
       // Return the paginated result, dividing the items into pages
       const paginatedProducts = [];

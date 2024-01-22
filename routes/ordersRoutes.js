@@ -9,7 +9,7 @@ router.get("/", orderController.getAllOrders);
 router.get("/:userId", orderController.getOrderByUserId);
 router.get("/:orderId", orderController.getOrderById);
 router.put("/update/:orderId",verifyRoles(["admin","moderator"]), orderController.updateOrder);
-router.post("/add",verifyRoles(["admin"]), orderController.addOrder);
+// router.post("/add",verifyRoles(["admin"]), orderController.addOrder);
 router.delete("/delete/:orderId",verifyRoles(["admin"]), orderController.deleteOrder);
 
 module.exports = router;

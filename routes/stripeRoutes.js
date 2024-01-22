@@ -3,9 +3,7 @@ const app = express();
 const router = express.Router();
 require("dotenv").config();
 // This is your test secret API key.
-const stripe = require("stripe")(
-  "sk_test_51OZwBLFa6d6UJ9SUoJadNmAhDfjMeiD2nCvvxMm9Cj4HSKQYbJbU3Y3MSxSd6X32ft2KquuPSKDTt6X9HA9xiwyy00omHIUihI"
-);
+const stripe = require("stripe")(process.env.STRIPE_KEY);
 app.use(express.static("public"));
 
 router.post("/create-checkout-session", async (req, res) => {
